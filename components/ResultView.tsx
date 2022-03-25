@@ -22,14 +22,18 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		paddingHorizontal: 16,
 		paddingBottom: 72,
-		alignItems: "center"
+		alignItems: "center",
 	}
 });
 
 export const ResultView: FC<ResultViewProps> = props => {
 
+	const rows = [...props.words];
+	const len = rows.length;
+	if (rows.length < 6) for (let i = 0; i < (6 - len); i++) rows.push("");
+
 	return <View style={styles.container}>
-		{props.words.map((word, i) => {
+		{rows.map((word, i) => {
 			return <ResultRow word={word} key={i}/>
 		})}
 	</View>;

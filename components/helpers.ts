@@ -4,6 +4,8 @@
  * elijah@elijahcobb.com
  * https://elijahcobb.com
  */
+import {useEffect, useRef, useState} from "react";
+import {AppState, AppStateStatus} from "react-native";
 
 function scoreForLetter(letter: string): number {
 
@@ -48,10 +50,51 @@ export function calculateScoreForWord(word: string): number {
 	return score
 }
 
+export function getWrambleDay(): number {
+	const start = new Date("3/25/22");
+	const now = new Date();
+	const ms = now.getDate() - start.getDate();
+	return Math.ceil(ms / 1000 / 60 / 60 / 24) + 1;
+}
+
+export function getShareMessage(words: string[]): string {
+	let rows = [];
+	let totalScore = 0;
+	for (const word of words) {
+		let wordX = ""
+		const wordScore = calculateScoreForWord(word);
+		for (let i = 0; i < word.length; i++) wordX += " ? ";
+		totalScore += wordScore;
+		rows.push(`${wordScore} pts - ${wordX}`)
+	}
+	let msg = `Wramble ${getWrambleDay()}  -  ${totalScore}pts\n\n`;
+	msg += rows.join("\n");
+	return msg;
+}
+
 export function getDayKey(): number {
 	const today = new Date();
 	const month = today.getMonth() + 1
 	const day = today.getDate()
 	const year = today.getFullYear()
 	return parseInt(month + "" + day + "" + year);
+}
+
+export function useAppState(): AppStateStatus {
+	const appState = useRef(AppState.currentState);
+	const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+	const _handleAppStateChange = (nextAppState: AppStateStatus) => {
+		appState.current = nextAppState;
+		setAppStateVisible(appState.current);
+	}
+
+	useEffect(() => {
+		AppState.addEventListener("change", _handleAppStateChange);
+		return () => {
+			AppState.removeEventListener("change", _handleAppStateChange);
+		};
+	}, []);
+
+	return appStateVisible;
 }

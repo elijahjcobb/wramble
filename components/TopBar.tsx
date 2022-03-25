@@ -11,7 +11,9 @@ import {StatusBar} from "expo-status-bar";
 import { EvilIcons } from '@expo/vector-icons';
 
 export interface TopBarProps {
-
+	targetWord: string;
+	allowShare: boolean;
+	onShare: () => void;
 }
 
 const styles = StyleSheet.create({
@@ -48,12 +50,12 @@ export const TopBar: FC<TopBarProps> = props => {
 	return <View style={styles.container}>
 		<StatusBar style="light" />
 		<Image style={styles.icon} source={require("../assets/wramble.png")}/>
-		<Text style={styles.title}>octopus</Text>
-		<TouchableOpacity
-			onPress={() => {}}
+		<Text style={styles.title}>{props.targetWord}</Text>
+		{props.allowShare && <TouchableOpacity
+			onPress={props.onShare}
 		>
 			<EvilIcons name="share-apple" size={36} color="dodgerblue" />
-		</TouchableOpacity>
+		</TouchableOpacity>}
 	</View>;
 
 };

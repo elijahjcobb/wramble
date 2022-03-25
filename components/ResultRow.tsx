@@ -16,15 +16,15 @@ export interface ResultRowProps {
 const styles = StyleSheet.create({
 	container: {
 		width: "45%",
-		height: "30%",
 		backgroundColor: "#333",
 		borderRadius: 16,
-		padding: 8,
 		margin: 8,
 		display: "flex",
 		justifyContent: "center",
 		alignItems: "center",
-		position: "relative"
+		position: "relative",
+		height: "30%",
+		maxHeight: 100
 	},
 	word: {
 		color: "white",
