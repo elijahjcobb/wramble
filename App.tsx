@@ -5,41 +5,53 @@
  * elijahcobb.com
  */
 
-import {StyleSheet, Text, View} from "react-native";
+import {KeyboardAvoidingView, Platform, StyleSheet, Text, View} from "react-native";
 import {TopBar} from "./components/TopBar";
 import {WordView} from "./components/WordView";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {useFonts} from "expo-font";
-import {useState} from "react";
+import {useCallback, useState} from "react";
+import {ResultView} from "./components/ResultView";
+import {getDayKey} from "./components/helpers";
 
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#000",
         alignItems: "center",
         justifyContent: "center",
         position: "relative"
     },
-    view: {
+    main: {
         flexGrow: 1,
         display: "flex",
-        backgroundColor: "#f8f8f8",
         width: "100%"
     }
 });
 
 export default function App() {
 
-    const [s, setS] = useState("Hello, world!");
+    const [newWord, setNewWord] = useState("");
+    const [words, setWords] = useState<string[]>([]);
+
+    console.log(getDayKey());
+
+    const handleNewWord = useCallback(() => {
+        if (words.length >= 6) return;
+        setWords([...words, newWord]);
+        setNewWord("");
+    }, [words, newWord]);
 
     return (
         <SafeAreaView edges={["top", "left", "right"]} style={styles.container}>
             <TopBar/>
-            <View style={styles.view}>
-                <WordView onDone={setS}/>
-                <Text>{s}</Text>
-            </View>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={styles.main}
+            >
+                <WordView word={newWord} setWord={setNewWord} onDone={handleNewWord}/>
+                <ResultView words={words}/>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     );
 

@@ -9,13 +9,15 @@ import React, {FC, useState} from "react";
 import {StyleSheet, Text, TextInput, View} from "react-native";
 
 export interface WordViewProps {
-	onDone: (value: string) => void;
+	word: string;
+	setWord: (value: string) => void;
+	onDone: () => void;
 }
 
 const styles = StyleSheet.create({
 	container: {
-		margin: 32,
-		backgroundColor: "white",
+		margin: 16,
+		backgroundColor: "#222",
 		borderRadius: 8,
 		padding: 16,
 		display: "flex",
@@ -24,13 +26,14 @@ const styles = StyleSheet.create({
 		alignItems: "baseline"
 	},
 	field: {
-		fontSize: 18
+		fontSize: 18,
+		color: "white"
 	}
 });
 
 export const WordView: FC<WordViewProps> = props => {
 
-	const [word, setWord] = useState("");
+	const {word, setWord, onDone} = props;
 
 	return <View style={styles.container}>
 		<TextInput
@@ -41,9 +44,11 @@ export const WordView: FC<WordViewProps> = props => {
 			style={styles.field}
 			returnKeyType={"done"}
 			onChangeText={setWord}
+			value={word}
 			autoFocus={true}
+			keyboardAppearance={"dark"}
 			blurOnSubmit={false}
-			onSubmitEditing={() => props.onDone(word)}
+			onSubmitEditing={onDone}
 		/>
 	</View>;
 

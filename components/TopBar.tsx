@@ -17,32 +17,36 @@ export interface TopBarProps {
 const styles = StyleSheet.create({
 	container: {
 		width: "100%",
-		padding: 32,
+		paddingBottom: 8,
 		paddingStart: 16,
+		paddingTop: 32,
 		paddingEnd: 16,
 		display: "flex",
 		justifyContent: "space-between",
 		flexDirection: "row",
 		alignItems: "center",
-		backgroundColor: "white",
-		borderBottomColor: "#eee",
+		backgroundColor: "#000",
+		color: "#fff",
+		borderBottomColor: "#111",
 		borderBottomWidth: 1
 	},
 	title: {
 		fontWeight: "bold",
 		fontSize: 32,
+		color: "#fff",
 		textTransform: "lowercase"
 	},
 	icon: {
 		width: 48,
-		height: 48
+		height: 48,
+		borderRadius: 8
 	}
 });
 
 export const TopBar: FC<TopBarProps> = props => {
 
 	return <View style={styles.container}>
-		<StatusBar style="auto" />
+		<StatusBar style="light" />
 		<Image style={styles.icon} source={require("../assets/wramble.png")}/>
 		<Text style={styles.title}>octopus</Text>
 		<TouchableOpacity
